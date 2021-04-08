@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; style-src ${cspSource}; script-src 'nonce-${nonce}';">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="${styleVSCodeUri}" rel="stylesheet" />
+    <link href="${styleMainUri}" rel="stylesheet" /> 
+    <title>Missing Search</title>
+</head>
+<body>
+
+    <div id="search-container">
+    <div class='container row space-around top'>
+        <div class='item'>
+          <input type='text' placeholder='Enter text' id='s0' name='s0' class="user-input"/>
+        </div>
+        <div class='item'>
+          <select id='operator0' class="user-input">
+            <option value="CONTAINS"> Contains</option>
+            <option value="MISSING"> Does not Contain</option>
+          </select>
+        </div>
+        <div class='item'>
+          <select id='specialCondition0' class="user-input">
+            <option value="NONE"> None</option>
+            <option value="MATCH_CASE"> Match Case</option>
+            <option value="MATCH_WHOLE_WORD"> Match Whole Word</option>
+          </select>
+        </div>
+        <div class='item' style='align-self: center;'>
+          <label class="switch">
+            <input type="checkbox" id="togBtn" class="user-input">
+            <div class="slider round">
+             <!--ADDED HTML -->
+             <span value='AND' class='on'>AND</span>
+             <span value='OR' class='off'>OR</span>
+             <!--END-->
+            </div>
+           </label>
+        </div>  
+        <div class='item hidden' style='align-self: center;margin: auto 0;'>
+          <button id='deleteIcon0' class='delete-icon'>X</button>
+      </div>
+      </div>
+    </div>
+      <div class="empty-row"></div>
+     <div class='container row space-around middle'>
+        <hr>
+        <button id="addBtn" class="width-10" >
+          Add
+        </button>
+        <hr>
+      </div>
+
+      <div class='container row flex-end end'>
+        <!-- <div class='width-60'></div> -->
+        <div class="item" style="text-align: center; min-width: 200px;">
+            <button id='searchButton' style="text-align: center; min-width: 200px;">
+              Search
+            </button>
+        </div>
+        <div class="item" style="text-align: center;">
+            <button>
+            Cancel
+            </button>
+        </div>
+        </div>
+    <script type="text/javascript" nonce="${nonce}" src="${scriptUri}" ></script>
+        <div id='result-section'>
+
+        </div>
+</body>
+
+</html>
