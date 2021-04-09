@@ -22,7 +22,7 @@ If you have any requirements or dependencies, add a section describing those and
 
 Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
 
-For example:abCD
+For example:abcd
 
 This extension contributes the following settings:
 

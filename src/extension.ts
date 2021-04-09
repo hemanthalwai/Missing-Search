@@ -21,6 +21,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	const iVariableMapping = new HtmlVariableMapping();
 	const ab  = rgPath;
 	const statusBarTriggerCommand = 'missing-search.statusbar-trigger';
+	const title = `Missing Search`;
 	var panel: vscode.WebviewPanel;
 	context.subscriptions.push(vscode.commands.registerCommand(statusBarTriggerCommand, async () => {
 		// vscode.window.showInformationMessage(`Triggered Search... Keep going!`);
@@ -29,7 +30,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	const myStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
 	myStatusBarItem.command = statusBarTriggerCommand;
-	myStatusBarItem.text = '$(search-view-icon) Missing Search';
+	myStatusBarItem.text = `$(search-view-icon) ${title}`;
 	myStatusBarItem.show();
 	context.subscriptions.push(myStatusBarItem);
 
@@ -40,9 +41,12 @@ export async function activate(context: vscode.ExtensionContext) {
 	const callback1 = async(item: any) => {
 		return new Promise((resolve) => {
 			const params: string[] = [];
-			params.push('-t md') // specifies file type extensions
-			const conditionString = (item.condition === 'MISSING')? '--files-without-match' : '--files-with-matches';
-			params.push(conditionString);
+			params.push('-t md'); // specifies file type extensions
+			params.push('--json')
+			if(item.condition === 'MISSING'){
+				const conditionString = '--files-without-match';
+				params.push(conditionString);
+			}
 			let isRegex = false;
 			let caseSensitiveString = null;
 			switch(item.specialCondition){
@@ -83,13 +87,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	
 			});
 			t2.stdout!.once('data', (data) =>{
-				// const res = stringDecoder.write(data)
-				// console.log(res);
-				// t2.kill();
-				// const resStr = data.toString('utf8');
-				// console.log(resStr);
 				t2.kill();
-	
 			});
 			t2.stderr!.on('data', (data) =>{
 				const res = stringDecoder.write(data)
@@ -100,12 +98,12 @@ export async function activate(context: vscode.ExtensionContext) {
 				console.log('closing code', code);
 				// tslint:disable-next-line
 				// getPanel().webview.postMessage({resultArray});
-				resolve({resultArray});
+				resolve(resultArray.join(''));
 			})	
 		});
 		
 	}
-	function getPanel() {
+	function getPanel() { 
 		return panel;
 	}
 	function setPanel(parampanel: any) {
@@ -134,7 +132,13 @@ export async function activate(context: vscode.ExtensionContext) {
 			});
 		await Promise.all(promises).then(results => {
 			const formattedResult: any = []
-			results.forEach(x => formattedResult.push(x.resultArray));
+			console.log(results);
+			const returnDataType = ['begin','match'];
+			results.forEach(x => {
+				const result = x.split('\n').map((y:any) => JSON.parse(y || null)).filter((item:any) => returnDataType.includes(item?.type));
+				formattedResult.push(result);
+			});
+			console.log(JSON.stringify(formattedResult));
 			getPanel().webview.postMessage({resultArray: formattedResult});
 		});
 	}, undefined, context.subscriptions);

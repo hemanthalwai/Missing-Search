@@ -26,7 +26,7 @@ form > * {
 	margin-block-end: var(--input-margin-vertical);
 }
 
-*:focus {
+*:focus:not(summary) {
 	outline-color: var(--vscode-focusBorder) !important;
 }
 
@@ -298,3 +298,57 @@ transform: rotate(-45deg);
   
   .slider.round:before {
 	border-radius: 50%;}
+.fixed_headers {
+	border-collapse: collapse;
+	width:100%;
+	}
+.fixed_headers td,
+.fixed_headers thead th {
+padding: 5px;
+text-align: left;
+}
+.fixed_headers thead, textarea {
+background-color: #333;
+color: #FDFDFD;
+}
+.fixed_headers thead tr {
+position: relative;
+}
+/* .fixed_headers tbody tr:nth-child(even) {
+background-color: #DDD;
+} */
+
+.fixed_headers thead th {
+top: 0;
+background-color: var(--vscode-background);
+z-index: 10;
+resize: horizontal;
+overflow: auto;
+min-width: 70px;
+border: 1px solid var(--vscode-foreground);
+}
+.resizeCol{
+	position:absolute;
+	top:0;
+	height:100%;
+	display:block;
+	width:6px;
+	cursor:col-resize;
+}
+.resizeCol.left{
+	left:0;
+}
+.resizeCol.right{
+	right:0;
+}
+summary{
+	outline: none;
+	border: none;
+}
+summary :focus{
+	outline: none;
+}
+details[open] summary {
+  	border: none;
+	outline: none;
+}
