@@ -352,3 +352,10 @@ details[open] summary {
   	border: none;
 	outline: none;
 }
+.bg-orange {
+	background-color: orangered;
+	display: inline-block;
+}
+p .bg-orange {
+	display: inline-block;
+}
