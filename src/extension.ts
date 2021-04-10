@@ -16,6 +16,9 @@ import { resolve } from 'dns';
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
  
+class BackupPanel {
+	static _panel: any = null;
+}
 export async function activate(context: vscode.ExtensionContext) {
 
 	const iVariableMapping = new HtmlVariableMapping();
@@ -104,20 +107,27 @@ export async function activate(context: vscode.ExtensionContext) {
 		
 	}
 	function getPanel() { 
-		return panel;
+		return BackupPanel._panel;
 	}
 	function setPanel(parampanel: any) {
 		panel = parampanel;
+		BackupPanel._panel = panel;
 	}
 	
 	const callback = async () => {
+		if(BackupPanel._panel !== null){
+			// BackupPanel._panel.
+			BackupPanel._panel.reveal(vscode.ViewColumn.One);
+			return;
+		}
 	panel = vscode.window.createWebviewPanel(
 		"configView",
 		"Missing Search",
 		vscode.ViewColumn.One,
 		{
 			enableScripts: true,
-			localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'assets'))]
+			localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'assets'))],
+			retainContextWhenHidden: true
 		}
 	);
 	setPanel(panel);
@@ -221,4 +231,6 @@ export async function activate(context: vscode.ExtensionContext) {
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() {
+	BackupPanel._panel = null;
+}
