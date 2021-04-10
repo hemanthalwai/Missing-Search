@@ -43,7 +43,7 @@
     }
     function removeClass(element, classNames) {
         classNames = classNames.split(' ');
-        element.classList.remove(...classNames);
+        element?.classList?.remove(...classNames);
     }
     function getNewDiv() {
         const div = document.createElement('div');
@@ -203,6 +203,22 @@
     function setValue(element, value) {
         element.value = value;
     }
+    function getLastRowInput() {
+        return getSearchContainer().lastChild;
+    }
+    function getLastRowNumberInput(){
+        const lastRow = getLastRowInput();
+        const rowNumberStr = lastRow?.id?.substr(3) || null;
+        return +rowNumberStr;
+    }
+    function getDeleteIconForLastRow(){
+        const rowNumber = getLastRowNumberInput();
+        return document.getElementById(`deleteIcon${rowNumber}`);
+    }
+    function getOperatorToggleForLastRow(){
+        const rowNumber = getLastRowNumberInput();
+        return document.getElementById(`operatorContainer${rowNumber}`);
+    }
     function getOperatorToggle() {
         const labelElement = getNewLabel();
         addClass(labelElement, 'switch');
@@ -210,6 +226,7 @@
         addClass(checkboxElement, 'user-input hidden');
         setValue(checkboxElement, 'AND');
         checkboxElement.checked = true;
+        checkboxElement.id = `operator${SEARCH_CONDITION_COUNT}`;
         labelElement.appendChild(checkboxElement);
         const sliderDiv = getNewDiv();
         addClass(sliderDiv, 'slider round');
@@ -222,13 +239,14 @@
         labelElement.appendChild(sliderDiv);
         return labelElement;
     }
-    function enableOperator(searchContainer) {
-        removeClass(searchContainer.lastChild, 'hidden');
+    function enableOperator() {
+        const operatorContanier = getOperatorToggleForLastRow();
+        removeClass(operatorContanier, 'hidden');
     }
     function addSearchContainer() {
         console.log('IN add search');
         const searchContainer = getSearchContainer();
-        // enableOperator(searchContainer);
+        enableOperator();
         const rowdiv = getNewDiv();
         addClass(rowdiv , 'container row space-around top');
         rowdiv.id = `row${++SEARCH_CONDITION_COUNT}`;
@@ -244,7 +262,9 @@
         rowdiv.appendChild(childdiv);
 
         childdiv = getNewDiv();
+        childdiv.id = `operatorContainer${SEARCH_CONDITION_COUNT}`;
         let toggleElement = getOperatorToggle();
+        addClass(childdiv, 'hidden');
         childdiv.appendChild(toggleElement);
         rowdiv.appendChild(childdiv);
 
@@ -300,6 +320,7 @@
         if (event?.which == 13 || event?.keyCode == 13)
             document.getElementById('searchButton').click();
     }
+
     function resetAllFields() {
         var criterias = document.querySelectorAll('.user-input');
         for(let i=0; i< criterias.length; i= i+4 ){
