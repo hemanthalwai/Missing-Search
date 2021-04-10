@@ -156,6 +156,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	// panel.webview.html = `${panel.webview.asWebviewUri(vscode.Uri.file('../assets/index.html'))}`;
 	};
 
+	
 
 	// const ttemp2 = vscode.extensions.getExtension("vscode.search-result");
 	//search.action.openResultToSide
