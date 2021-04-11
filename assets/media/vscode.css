@@ -344,6 +344,7 @@ border: 1px solid var(--vscode-foreground);
 summary{
 	outline: none;
 	border: none;
+	cursor: pointer;
 }
 summary :focus{
 	outline: none;
@@ -353,9 +354,11 @@ details[open] summary {
 	outline: none;
 }
 .bg-orange {
-	background-color: orangered;
-	display: inline-block;
+	background-color: var(--vscode-editor-findMatchHighlightBackground);
+	display: inherit;
 }
-p .bg-orange {
-	display: inline-block;
+
+.matches {
+	font-size: var(--vscode-font-size);
+	padding: 0 0 0.8% 0;
 }

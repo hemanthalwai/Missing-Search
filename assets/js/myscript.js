@@ -119,13 +119,30 @@
     }
     function generateResultTable(data) {
         const newRows = [];
-        data.forEach(data => {
-            const tr = getNewTableRow();
-            tr.appendChild(getColumn1(data));
-            tr.appendChild(getNewTableCell('Test'));
-            tr.appendChild(getNewTableCell('Test'));
-            newRows.push(tr);
+        let mathingRecord = [];
+        data[0].forEach(matchResult => {
+            if(matchResult.type === 'begin'){
+                if(mathingRecord.length === 0)
+                    mathingRecord.push(matchResult);
+                else{
+                    const tr = getNewTableRow();
+                    tr.appendChild(getColumn1(mathingRecord));
+                    tr.appendChild(getNewTableCell('Test'));
+                    tr.appendChild(getNewTableCell('Test'));
+                    newRows.push(tr);
+                    mathingRecord = [];
+                    mathingRecord.push(matchResult);
+                }
+                return;
+            }
+            mathingRecord.push(matchResult);
+           
         })
+        const tr = getNewTableRow();
+                    tr.appendChild(getColumn1(mathingRecord));
+                    tr.appendChild(getNewTableCell('Test'));
+                    tr.appendChild(getNewTableCell('Test'));
+                    newRows.push(tr);
         return newRows;
     }
     function getNewTableCell(text) {
@@ -142,7 +159,7 @@
     function getExpandableSearchResult(data) {
         let {fileName, filematches } = '';
         const file = data.find(x => x.type === 'begin');
-        const matches = data.find(x => x.type === 'match');
+        const matches = data.filter(x => x.type === 'match');
         if(file){
             fileName = file?.data?.path?.text;
             filematches = matches?.data?.lines?.text;
@@ -151,12 +168,31 @@
         const summary = document.createElement('summary');
         const span = getNewSpan();
         summary.textContent = fileName || '';
-        const startIndex = matches?.data?.submatches[0]?.start;
-        const lastIndex = matches?.data?.submatches[0]?.end;
-        const matchingLine = matches?.data?.lines?.text;
-        const matchingString = matchingLine.substring(startIndex, lastIndex);
-        addClass(span, 'bg-orange');
-        detailsElement.innerHTML = `${matchingLine.substring(0, startIndex)} <p class='bg-orange'>${matchingString}</p>${matchingLine.substring(lastIndex)}`;
+        const ul = document.createElement('ul');
+        ul.setAttribute('type', 'none');
+        matches.forEach(match => {
+            const startIndex = match?.data?.submatches[0]?.start;
+            const lastIndex = match?.data?.submatches[0]?.end;
+            const matchingLine = match?.data?.lines?.text;
+            const matchingString = matchingLine.substring(startIndex, lastIndex);
+            const listItem = document.createElement('li');
+            addClass(listItem, 'matches');
+            ul.append(listItem);
+
+            const span = getNewSpan();
+            const para = document.createElement('p');
+            addClass(para, 'bg-orange');
+            let pretext = matchingLine.substring(0, startIndex);
+            let posttext = matchingLine.substring(lastIndex);
+            
+            span.appendChild(para);
+            // span.insertBefore(pretext, para);
+            para.insertAdjacentText('beforebegin', pretext);
+            para.textContent = matchingString;
+            para.insertAdjacentText('afterend', posttext);
+            listItem.append(span);
+        })
+        detailsElement.append(ul); 
         detailsElement.appendChild(summary);
         return detailsElement;
     }
