@@ -200,7 +200,7 @@ div hr {
 	width: 35%;
   }
 .delete-icon {
-	font-size: 1em; /*var(--vscode-font-size); */
+	font-size: 0.9em; /*var(--vscode-font-size); */
 	cursor: pointer;
 	color: var(--vscode-button-foreground);
 	background: var(--vscode-button-background);
@@ -224,7 +224,7 @@ transform: rotate(-45deg);
 	display: inline-block;
 	width: 62px;
 	height: 25px;
-	vertical-align: middle;
+	top: 1px;
   }
   .switch input {display:none;}
   .slider {
@@ -234,7 +234,7 @@ transform: rotate(-45deg);
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background-color: var(--vscode-editor-background);
+	background-color: var(--vscode-input-background);
 	-webkit-transition: .4s;
 	transition: .4s;
   }
@@ -243,8 +243,8 @@ transform: rotate(-45deg);
 	content: "";
 	height: 16px;
 	width: 16px;
-	left: 4px;
-	bottom: 4px;
+	left: 3px;
+	bottom: 3px;
 	background-color: var(--vscode-button-foreground);
 	-webkit-transition: .4s;
 	transition: .4s;
@@ -258,9 +258,9 @@ transform: rotate(-45deg);
   }
   
   input:checked + .slider:before {
-	-webkit-transform: translateX(39px);
-	-ms-transform: translateX(39px);
-	transform: translateX(39px);
+	-webkit-transform: translateX(37px);
+	-ms-transform: translateX(37px);
+	transform: translateX(37px);
   }
   .on
   {
@@ -272,18 +272,18 @@ transform: rotate(-45deg);
 	color: var(--vscode-button-foreground);
 	position: absolute;
 	transform: translate(-70%,-50%);
-	top: 50%;
+	top: 46%;
 	left: 50%;
 	font-size: var(--vscode-font-size);
 	font-family: var(--vscode-font-family);
   }
   .off
   {
-	color: var(--vscode-button-foreground);
+	color: var(--vscode-input-foreground);
 	position: absolute;
 	transform: translate(-50%,-50%);
-	top: 50%;
-	left: 50%;
+	top: 46%;
+	left: 60%;
 	font-size: var(--vscode-font-size);
 	font-family: var(--vscode-font-family);
   }
@@ -294,10 +294,13 @@ transform: rotate(-45deg);
   {display: none;}
   .slider.round {
 	border-radius: 34px;
+	border: 1px solid var(--vscode-input-foreground);
   }
   
   .slider.round:before {
-	border-radius: 50%;}
+	border-radius: 50%;
+	border: 1px solid var(--vscode-input-foreground);
+}
 .fixed_headers {
 	border-collapse: collapse;
 	width:100%;
@@ -308,8 +311,8 @@ padding: 5px;
 text-align: left;
 }
 .fixed_headers thead, textarea {
-background-color: #333;
-color: #FDFDFD;
+background-color: var(--vscode-background);
+color: var(--vscode-foreground);
 }
 .fixed_headers thead tr {
 position: relative;
